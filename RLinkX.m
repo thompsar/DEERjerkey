@@ -1,15 +1,21 @@
 (* ::Package:: *)
 
-(* RLinkX.m, place in FileNameJoin[{$UserBaseDirectory, "Applications"}] *)
+(*Place in FileNameJoin[{$UserBaseDirectory, "Applications"}] 
+or with mmDEER notebook.
+
+From https://github.com/szhorvat/RLinkX/blob/master/RLinkX.*)
 
 BeginPackage["RLinkX`", {"RLink`"}]
 
-(* Use only for Mathematica versions earlier than 10.0.1: *)
 InstallRX::usage = "InstallRX[] will launch an external version of R."
 
 Begin["`Private`"]
 
-(* Set the location of your R installation here: *)
+(* Set the location of your R installation here: 
+For Mac users see the note on El Cap and later users here: 
+http://szhorvat.net/pelican/setting-up-rlink-for-mathematica.html
+Follow solution number 2 (library patching) to get things working.
+*)
 Switch[$OperatingSystem,
     "MacOSX",  rloc = "/Library/Frameworks/R.framework/Resources/",
     "Unix",    rloc = "/usr/lib/R", (* "/usr/lib64/R" for Fedora *)
