@@ -138,37 +138,7 @@ N*Log[(Norm[data-fit]^2)/N]+K*Log[N]
 ];
 
 (*kernel construction*)
-buildkernels[dimension_,rmin_,rmax_,dt_]:=Module[{ny0,w0,t,r,kernel,k,i,Lmatrix},
-ny0=52.04;(* dipolar frequency at 1 nm for g=ge*)
-w0=2*\[Pi]*ny0;(* angular frequencies*)
-t=Table[i,{i,0,(dimension-1)*dt,dt}]; (*time axis in \[Micro]s*)
-r=Table[i,{i,rmin,rmax,(rmax-rmin)/(dimension-1)}];(* distance axis in nm*)
-
-kernel=ConstantArray[0.,{Length[r],Length[t]}];(*  data array for kernel*)
-
- kernel=ParallelTable[Sum[Cos[(w0/r[[k]]^3*(3*(l/1000)^2-1))*t],{l,0,1000}],{k,1,Length[r]}];
-
-For[ k=1,k<=Length[r] ,k++,
-(*loop for kernel normalization*)
-kernel[[k,All]]=kernel[[k,All]]/kernel[[k,1]]; (*normalize dipolar time evolution traces*)
-];
-
-kernel=kernel\[Transpose]; (*Rotate kernel for all other operations*)
-
-Lmatrix=ConstantArray[0.,{dimension-2,dimension}];
-For[i=1,i<=(Dimensions[Lmatrix][[1]]),i++,
-Lmatrix[[i,1+(i-1)]]=1.;
-Lmatrix[[i,1+(i-0)]]=-2.;
-Lmatrix[[i,1+(i+1)]]=1.;
-];
-Lmatrix=SparseArray[Lmatrix];
-
-
-
-{r,t,kernel,Lmatrix}
-];
-
-buildkernels2[dimension_,rmin_,rmax_,tmax_,dt_]:=Module[{ny0,w0,t,r,kernel,k,i,Lmatrix},
+buildkernels[dimension_,rmin_,rmax_,tmax_,dt_]:=Module[{ny0,w0,t,r,kernel,k,i,Lmatrix},
 ny0=52.04;(* dipolar frequency at 1 nm for g=ge*)
 w0=2*\[Pi]*ny0;(* angular frequencies*)
 t=Table[i,{i,0,tmax+2*dt,dt}]; (*time axis in \[Micro]s*)
